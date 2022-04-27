@@ -1,0 +1,29 @@
+<?php
+
+function add_custom_fields_to_feed($content) {
+    if(is_feed()) {
+        $post_id = get_the_ID();
+            
+			//$featured_image = get_the_post_thumbnail_url( get_the_ID(), 'medium' );
+			$pub_date = get_post_meta( $post_id, 'publication-date', true );
+			$bible_reference = get_post_meta( $post_id, 'bible-reference-english', true );
+			$reading_title = get_post_meta( $post_id, 'reading-title-english', true );
+			$content_english = get_post_meta( $post_id, 'content-english', true );
+			$image_caption = get_post_meta( $post_id, 'image-caption-english', true );
+			$reflection_title = get_post_meta( $post_id, 'reflection-title-english', true );
+			$reflection = get_post_meta( $post_id, 'reflection-english', true );
+
+			//$output = '<image><url>' . $featured_image . '</url></image>';
+			$output = $image_caption;
+			$output .= '<div><h1>' . $bible_reference . '</h1>';
+			$output .= '<h3>' . $reading_title . '</h3>';
+			$output .= $content_english;
+			$output .= '<h3>' . $reflection_title . '</h3>';
+			$output .= $reflection . '</div>'; 
+			$output .= $body;
+			
+        $content = $content.$output;
+    }
+    return $content;
+}
+add_filter('the_content','add_custom_fields_to_feed');
